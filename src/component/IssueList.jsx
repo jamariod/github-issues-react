@@ -1,11 +1,14 @@
 import React, { Component } from "react";
 
+import Issue from "./Issue";
+
+import "bulma/css/bulma.css";
+
 class IssueList extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      issues: [],
-      isLoaded: false
+      issues: []
     };
   }
   componentDidMount() {
@@ -13,30 +16,21 @@ class IssueList extends Component {
       .then(res => res.json())
       .then(json => {
         this.setState({
-          isLoaded: true,
           issues: json
         });
       });
   }
   render() {
-    var { isLoaded, issues } = this.state;
-    if (!isLoaded) {
-      return <div>Loading...</div>;
-    } else {
-      return (
-        <div className="IssueList">
-          <ul>
-            {issues.map(issue => (
-              <li key={issue.url}>
-                Title: {issue.title} | Url: {issue.url} | Body:
-                {issue.body}
-              </li>
-            ))}
-          </ul>
-        </div>
-      );
-    }
-    return <div className="IssueList"></div>;
+    const { issues } = this.state;
+
+    return (
+      <ul>
+        {issues.map(issue => (
+          <Issue key={issue.id} issue={issue} />
+        ))}
+      </ul>
+    );
   }
 }
+
 export default IssueList;
